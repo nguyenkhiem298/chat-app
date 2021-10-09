@@ -1,15 +1,25 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Typography } from 'antd';
 import firebase, {auth} from '../../firebase/config';
+import { useHistory } from 'react-router-dom'
 
 const { Title } = Typography;
 
 const gitHubProvider = new firebase.auth.GithubAuthProvider();
 
 export default function LoginPage() {
+    const history = new useHistory();
+
     const handleGitHubLogin = () => {
         auth.signInWithPopup(gitHubProvider);
     }
+
+    auth.onAuthStateChanged((user) => {
+        console.log({user});
+        if(user) {
+            history.push('/');
+        }
+    });
 
     return (
         <div>
