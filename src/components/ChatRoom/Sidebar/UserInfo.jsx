@@ -1,14 +1,28 @@
 import { Avatar, Button, Typography } from 'antd'
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components';
+import { auth } from '../../../firebase/config';
+
+const WrapperStyle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(82, 38, 83);
+
+    .username {
+        color: white;
+        margin-left: 5px;
+    }
+`;
 
 export default function UserInfo() {
     return (
-        <div>
+        <WrapperStyle>
             <div>
-                <Avatar>A</Avatar>
-                <Typography.Text>Nguyen Van A</Typography.Text>
+                <Avatar>ABC</Avatar>
+                <Typography.Text className="username">Nguyen Van A</Typography.Text>
             </div>
-            <Button>Đăng Xuất</Button>
-        </div>
+            <Button ghost onClick={() => auth.signOut()}>Đăng Xuất</Button>
+        </WrapperStyle>
     )
 }

@@ -12,7 +12,6 @@ export default function AuthProvider({children}) {
     const history = new useHistory();
 
     useEffect(() => {
-
         const unsubscibed = auth.onAuthStateChanged((user) => {
             console.log({user});
             if(user) {
@@ -22,8 +21,10 @@ export default function AuthProvider({children}) {
                 });
                 setIsLoading(false);
                 history.push('/');
+                return;
             }
-
+            
+            setIsLoading(false); // Nếu ko sẽ hiện icon loading
             history.push('/login')
         });
         

@@ -8,18 +8,11 @@ const { Title } = Typography;
 const gitHubProvider = new firebase.auth.GithubAuthProvider();
 
 export default function LoginPage() {
-    const history = new useHistory();
 
-    const handleGitHubLogin = () => {
-        auth.signInWithPopup(gitHubProvider);
+    const handleGitHubLogin = async () => {
+        const data = await auth.signInWithPopup(gitHubProvider);
+        console.log(data);
     }
-
-    auth.onAuthStateChanged((user) => {
-        console.log({user});
-        if(user) {
-            history.push('/');
-        }
-    });
 
     return (
         <div>
