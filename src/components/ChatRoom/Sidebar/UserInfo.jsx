@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
 import { Avatar, Button, Typography } from 'antd'
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import { auth, db } from '../../../firebase/config';
+import { AuthContext } from '../../Context/AuthProvider';
 
 const WrapperStyle = styled.div`
     display: flex;
@@ -13,28 +13,35 @@ const WrapperStyle = styled.div`
     .username {
         color: white;
         margin-left: 5px;
+        font-size: 14px;
+        font-weight: bold;
     }
 `;
 
 export default function UserInfo() {
 
-    useEffect(() => {
+/*     useEffect(() => {
         db.collection('user').onSnapshot((snapshot) => {
             const data = snapshot.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }))
-            
+
             console.log({data, snapshot, docs: snapshot.docs});
         });
         
-    }, []);
+    }, []); */
+
+    // Lấy dữ liệu từ AuthContext
+    const data = React.useContext(AuthContext);
+
+    console.log(data);
 
     return (
         <WrapperStyle>
             <div>
-                <Avatar>ABC</Avatar>
-                <Typography.Text className="username">Nguyen Van A</Typography.Text>
+                <Avatar src={data.photoURL}>ABC</Avatar>
+                <Typography.Text className="username">{data.displayName}</Typography.Text>
             </div>
             <Button ghost onClick={() => auth.signOut()}>Đăng Xuất</Button>
         </WrapperStyle>
