@@ -16,13 +16,14 @@ export default function LoginPage() {
         //Từ lần đăng nhập sau thì sẽ không thực thi đoạn code bên dưới
         if(additionalUserInfo.isNewUser) {
             const userInfo = {};
-            if(additionalUserInfo.providerId === 'github.com') {
-                const userName = user.email.split('@').at(0);
-                userInfo.displayName = userName;
-            } else {
-                userInfo.displayName = user.displayName;
-            }
+            // if(additionalUserInfo.providerId === 'github.com') {
+            //     const userName = user.email.split('@').at(0);
+            //     userInfo.displayName = userName;
+            // } else {
+            //     userInfo.displayName = user.displayName;
+            // }
 
+            userInfo.displayName = user.displayName;
             userInfo.email = user.email;
             userInfo.photoURL = user.photoURL;
             userInfo.uid = user.uid;
