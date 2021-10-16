@@ -35,7 +35,7 @@ export default function UserInfo() {
     // Lấy dữ liệu từ AuthContext
     const data = React.useContext(AuthContext);
 
-    console.log(data);
+    // console.log(data);
 
     return (
         <WrapperStyle>
