@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { PlusSquareOutlined} from '@ant-design/icons'
 import firebase, { db } from '../../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
-import { RoomsContext } from '../../Context/AppProvider';
+import { AppContext, RoomsContext } from '../../Context/AppProvider';
+import AddRoomsModal from './Modal/AddRoomsModal';
 
 const { Panel } = Collapse;
 
@@ -32,6 +33,8 @@ const ButtonStyle = styled(Button)`
 `;
 
 export default function RoomList() {
+
+    const {setIsModalVisible} = useContext(AppContext);
 
     // const [rooms, setRooms] = useState([]);
 
@@ -94,8 +97,7 @@ export default function RoomList() {
     }, [uidCondition]); */
 
 
-    const {rooms} = useContext(RoomsContext);
-
+    const {rooms} = useContext(AppContext);
 
 
     // const roomslist = [];
@@ -104,6 +106,9 @@ export default function RoomList() {
     //     roomslist.push(el);
     // }
 
+    const showAddRoom = () => {
+        setIsModalVisible(true)
+    }
     
 
     return (
@@ -114,8 +119,9 @@ export default function RoomList() {
                         <LinkStyle key={room.id}>{room.nameRoom}</LinkStyle>
                     ))
                 }
+                <AddRoomsModal/>
 
-                <ButtonStyle type="text" icon={<PlusSquareOutlined/>} className="add-room">Thêm Phòng</ButtonStyle>
+                <ButtonStyle onClick={showAddRoom} type="text" icon={<PlusSquareOutlined/>} className="add-room">Thêm Phòng</ButtonStyle>
             </PanleStyle>
         </Collapse>
     )

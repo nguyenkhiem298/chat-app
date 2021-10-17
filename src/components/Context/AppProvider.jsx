@@ -2,10 +2,11 @@ import React, {useContext, useEffect, useState, useMemo} from "react";
 import { db } from "../../firebase/config";
 import { AuthContext } from "./AuthProvider";
 
-export const RoomsContext = React.createContext();
+export const AppContext = React.createContext();
 
 export default function RoomsProvider({children}) {
     const [rooms, setRooms] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const {uid} = useContext(AuthContext);
 
@@ -30,9 +31,13 @@ export default function RoomsProvider({children}) {
     }, [uidCondition]);
 
     return (
-        <RoomsContext.Provider value={{rooms}}>
+        <AppContext.Provider value={{
+            rooms, 
+            isModalVisible, 
+            setIsModalVisible
+        }}>
             {children}
-        </RoomsContext.Provider>
+        </AppContext.Provider>
     )
 
 
