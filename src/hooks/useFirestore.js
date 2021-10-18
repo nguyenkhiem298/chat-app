@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import {useEffect, useState} from "react"
 import { db } from "../firebase/config"
 
 export const useFirestore = (collection, condition) => {
@@ -20,7 +20,7 @@ export const useFirestore = (collection, condition) => {
                 return;
             }
 
-            collectionRef.where(condition.fielName, condition.operator, condition.compareValue);
+            collectionRef = collectionRef.where(condition.fielName, condition.operator, condition.compareValue);
         }
 
         const unsubscribe = collectionRef.onSnapshot((snapshot) => {
