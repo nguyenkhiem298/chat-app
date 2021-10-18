@@ -1,11 +1,16 @@
-import { Input, Modal } from 'antd'
+import { Input, Modal, Form } from 'antd'
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../../../Context/AppProvider';
 
 export default function AddRoomsModal() {
     const { isModalVisible, setIsModalVisible} = useContext(AppContext);
+    const [form] = Form.useForm();
 
     const handleOk = () => {
+        console.log({formData: form.getFieldsValue()});
+
+
+        // form.resetFields();
         setIsModalVisible(false);
     }
     
@@ -15,11 +20,20 @@ export default function AddRoomsModal() {
 
 
     return (
-        <Modal title="Create Room" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-            <p>Input Room's name</p>
-            <Input placeholder="Room Name"></Input>
-            <p style={{paddingTop: 20}}>Description</p>
-            <Input.TextArea placeholder="Input Room's description"></Input.TextArea>
+        <Modal 
+            title="Create Room" 
+            visible={isModalVisible} 
+            onOk={handleOk} 
+            onCancel={handleCancel}
+        >
+            <Form form={form} layout='vertical'>
+                <Form.Item label="Tên phòng" name="name">
+                    <Input placeholder="Room Name"></Input>
+                </Form.Item>
+                <Form.Item label="Mô tả" name="description">
+                    <Input.TextArea placeholder="Room Name"></Input.TextArea>
+                </Form.Item>
+            </Form>
         </Modal>
 
     )

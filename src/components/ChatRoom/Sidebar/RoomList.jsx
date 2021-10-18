@@ -127,9 +127,9 @@ export default function RoomList() {
                         <LinkStyle key={room.id}>{room.nameRoom}</LinkStyle>
                     ))
                 }
-                <AddRoomsModal/>
-
                 <ButtonStyle onClick={showAddRoom} type="text" icon={<PlusSquareOutlined/>} className="add-room">Thêm Phòng</ButtonStyle>
+
+                <AddRoomsModal/>
             </PanleStyle>
         </Collapse>
     )
