@@ -15,10 +15,16 @@ export default function RoomsProvider({children}) {
     }, [uid])
 
     useEffect(() => {
-        const unsubscibed = db.collection('rooms')
+        let queryCollections = db.collection('rooms')
             .orderBy('createAt')
-            .where('menbers', 'array-contains', uidCondition)
-            .onSnapshot((querySnapshot) => {
+
+            if(!uidCondition || uidCondition.length === 0) {
+                return;
+            }
+            queryCollections = queryCollections.where('menbers', 'array-contains', uidCondition)
+
+
+            const unsubscibed = queryCollections.onSnapshot((querySnapshot) => {
                 const documents = querySnapshot.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id,

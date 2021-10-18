@@ -65,7 +65,7 @@ export default function UserInfo() {
     return (
         <WrapperStyle>
             <div>
-                <Avatar src={data.photoURL}>{data.photoURL ? '' : data.displayName || data.displayName.charAt(0) ? data.displayName.charAt(0) : ''}</Avatar>
+                <Avatar src={data.photoURL}>{data.photoURL ? '' : data.displayName && data.displayName.charAt(0) ? data.displayName.charAt(0) : ''}</Avatar>
                 <Typography.Text className="username">{data.displayName}</Typography.Text>
             </div>
             <Button ghost onClick={() => auth.signOut()}>Đăng Xuất</Button>
