@@ -21,7 +21,8 @@ export default function RoomsProvider({children}) {
             if(!uidCondition || uidCondition.length === 0) {
                 return;
             }
-            queryCollections = queryCollections.where('menbers', 'array-contains', uidCondition)
+            console.log(uidCondition);
+            queryCollections = queryCollections.where('members', 'array-contains', uidCondition)
 
 
             const unsubscibed = queryCollections.onSnapshot((querySnapshot) => {

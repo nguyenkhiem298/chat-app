@@ -30,6 +30,7 @@ const LinkStyle = styled(Typography.Link)`
 
 const ButtonStyle = styled(Button)`
     padding-left: 0px;
+    color: white;
 `;
 
 export default function RoomList() {
@@ -106,6 +107,7 @@ export default function RoomList() {
 
 
     const {rooms} = useContext(AppContext);
+    console.log({rooms});
 
 
     // const roomslist = [];
