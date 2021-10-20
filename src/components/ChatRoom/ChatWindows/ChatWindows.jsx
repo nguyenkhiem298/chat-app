@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { UserAddOutlined } from '@ant-design/icons';
-import { Avatar, Button, Tooltip, Form, Input} from 'antd';
+import { Avatar, Button, Tooltip, Form, Input, Alert} from 'antd';
 import styled from 'styled-components';
 import Message from './Message';
 import listMessage from '../../../data/listMessage.json'
+import { AppContext } from '../../Context/AppProvider';
+import { db } from '../../../firebase/config';
 
 const WrapperStyle = styled.div`
     height: 100vh;
@@ -79,55 +81,91 @@ const FormStyle = styled(Form)`
 `;
 
 export default function ChatWindows() {
+    const {selectRoomId} = useContext(AppContext);
+    const [room, setRoom] = useState({});
+    // console.log(selectRoomId);
 
-    
+    const uidRoomCondition = useMemo(() => {
+        return selectRoomId;
+    }, [selectRoomId])
+
+    //Get room by Id:
+    useEffect(() => {
+        const query = db.collection("rooms").where("idRoom", "==", uidRoomCondition);
+
+        const unsubscibed = query.onSnapshot((querySnapshot) => {
+            const document = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }))
+
+            // console.log(document[0]);
+            setRoom(document[0]);
+        });
+
+        return unsubscibed;
+    }, [uidRoomCondition]);
+
+    // console.log(room);
 
     return (
         <WrapperStyle>
-            <HeaderStyled>
-                <div className="header_info">
-                    <p className="header_title">Room 1</p>
-                    <span className="header_des">This is description of room chat</span>
-                </div>
-                <ButtonGroupStyle>
-                    <Button icon={<UserAddOutlined/>} type="text">Mời</Button>
-                    <Avatar.Group size='small' maxCount={2}>
-                        <Tooltip title='A'>
-                            <Avatar>A</Avatar>
-                        </Tooltip>
-                        <Tooltip title='B'>
-                            <Avatar>B</Avatar>
-                        </Tooltip>
-                        <Tooltip title='C'>
-                            <Avatar>C</Avatar>
-                        </Tooltip>
-                        <Tooltip title='D'>
-                            <Avatar>D</Avatar>
-                        </Tooltip>
-                        <Tooltip title='E'>
-                            <Avatar>E</Avatar>
-                        </Tooltip>
-                        <Tooltip title='F'>
-                            <Avatar>F</Avatar>
-                        </Tooltip>
-                    </Avatar.Group>
-                </ButtonGroupStyle>
-            </HeaderStyled>
-            <ContentStyled>
-                <MessageListStyle>
-                    {
-                        listMessage.map((mess) => (
-                            <Message key={mess.id} textContent={mess.textContent} displayName={mess.displayName} createAt={mess.createAt} photoURL={mess.photoURL}/>
-                        ))
-                    }
-                </MessageListStyle>
-                <FormStyle>
-                    <Form.Item>
-                        <Input placeholder="Nhập tin nhắn..." bordered={false} autoComplete="off"/>
-                    </Form.Item>
-                    <Button>Gửi</Button>
-                </FormStyle>
-            </ContentStyled>
+            {selectRoomId && room ? (
+                <>
+                    <HeaderStyled>
+                        <div className="header_info">
+                            <p className="header_title">{room.nameRoom}</p>
+                            <span className="header_des">{room.desciption}</span>
+                        </div>
+                        <ButtonGroupStyle>
+                            <Button icon={<UserAddOutlined/>} type="text">Mời</Button>
+                            <Avatar.Group size='small' maxCount={2}>
+                                <Tooltip title='A'>
+                                    <Avatar>A</Avatar>
+                                </Tooltip>
+                                <Tooltip title='B'>
+                                    <Avatar>B</Avatar>
+                                </Tooltip>
+                                <Tooltip title='C'>
+                                    <Avatar>C</Avatar>
+                                </Tooltip>
+                                <Tooltip title='D'>
+                                    <Avatar>D</Avatar>
+                                </Tooltip>
+                                <Tooltip title='E'>
+                                    <Avatar>E</Avatar>
+                                </Tooltip>
+                                <Tooltip title='F'>
+                                    <Avatar>F</Avatar>
+                                </Tooltip>
+                            </Avatar.Group>
+                        </ButtonGroupStyle>
+                    </HeaderStyled>
+                    <ContentStyled>
+                        <MessageListStyle>
+                            {
+                                listMessage.map((mess) => (
+                                    <Message key={mess.id} textContent={mess.textContent} displayName={mess.displayName} createAt={mess.createAt} photoURL={mess.photoURL}/>
+                                ))
+                            }
+                        </MessageListStyle>
+                        <FormStyle>
+                            <Form.Item>
+                                <Input placeholder="Nhập tin nhắn..." bordered={false} autoComplete="off"/>
+                            </Form.Item>
+                            <Button>Gửi</Button>
+                        </FormStyle>
+                    </ContentStyled>
+                </>
+            ) : (
+                <Alert
+                    message='Hãy chọn phòng'
+                    type='info'
+                    showIcon
+                    style={{ margin: 5 }}
+                    closable
+                />
+            )}
         </WrapperStyle>
     )
 }

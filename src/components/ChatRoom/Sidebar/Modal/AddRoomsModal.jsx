@@ -25,8 +25,6 @@ export default function AddRoomsModal() {
 
         const room = {};
 
-        console.log(uid);
-        
         room.idRoom = guidGenerator();
         room.nameRoom = data.name;
         room.desciption = data.description;

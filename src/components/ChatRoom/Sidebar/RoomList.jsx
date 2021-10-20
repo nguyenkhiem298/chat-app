@@ -34,7 +34,7 @@ const ButtonStyle = styled(Button)`
 `;
 
 export default function RoomList() {
-    const {setIsModalVisible} = useContext(AppContext);
+    const {setIsModalVisible, setSelectRoomId} = useContext(AppContext);
 
     /* 
         {
@@ -107,7 +107,7 @@ export default function RoomList() {
 
 
     const {rooms} = useContext(AppContext);
-    console.log({rooms});
+    // console.log({rooms});
 
 
     // const roomslist = [];
@@ -126,7 +126,12 @@ export default function RoomList() {
             <PanleStyle header="Danh sach cac phong" key="1">
                 {
                     rooms.map((room) => (
-                        <LinkStyle key={room.id}>{room.nameRoom}</LinkStyle>
+                        <LinkStyle 
+                            key={room.id}
+                            onClick={() => setSelectRoomId(room.idRoom)}
+                        >
+                            {room.nameRoom}
+                        </LinkStyle>
                     ))
                 }
                 <ButtonStyle onClick={showAddRoom} type="text" icon={<PlusSquareOutlined/>} className="add-room">Thêm Phòng</ButtonStyle>

@@ -4,9 +4,10 @@ import { AuthContext } from "./AuthProvider";
 
 export const AppContext = React.createContext();
 
-export default function RoomsProvider({children}) {
+export default function AppProvider({children}) {
     const [rooms, setRooms] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectRoomId, setSelectRoomId] = useState('');
 
     const {uid} = useContext(AuthContext);
 
@@ -21,7 +22,7 @@ export default function RoomsProvider({children}) {
             if(!uidCondition || uidCondition.length === 0) {
                 return;
             }
-            console.log(uidCondition);
+            // console.log(uidCondition);
             queryCollections = queryCollections.where('members', 'array-contains', uidCondition)
 
 
@@ -41,7 +42,9 @@ export default function RoomsProvider({children}) {
         <AppContext.Provider value={{
             rooms, 
             isModalVisible, 
-            setIsModalVisible
+            setIsModalVisible,
+            selectRoomId,
+            setSelectRoomId
         }}>
             {children}
         </AppContext.Provider>

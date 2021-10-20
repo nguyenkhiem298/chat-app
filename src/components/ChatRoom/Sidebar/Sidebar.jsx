@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Row, Col } from 'antd';
 import UserInfo from './UserInfo';
 import RoomList from './RoomList';
@@ -11,6 +11,13 @@ const SidebarStyled = styled.div`
 `;
 
 export default function Sidebar() {
+/* export default function Sidebar({functionCallBack}) { */
+
+
+/*     useEffect(() => {
+        functionCallBack("Khiem");
+    }, []) */
+
     return (
         <SidebarStyled>
             <Row>
