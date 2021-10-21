@@ -120,24 +120,15 @@ export default function ChatWindows() {
                         <ButtonGroupStyle>
                             <Button icon={<UserAddOutlined/>} type="text">Mời</Button>
                             <Avatar.Group size='small' maxCount={2}>
-                                <Tooltip title='A'>
-                                    <Avatar>A</Avatar>
-                                </Tooltip>
-                                <Tooltip title='B'>
-                                    <Avatar>B</Avatar>
-                                </Tooltip>
-                                <Tooltip title='C'>
-                                    <Avatar>C</Avatar>
-                                </Tooltip>
-                                <Tooltip title='D'>
-                                    <Avatar>D</Avatar>
-                                </Tooltip>
-                                <Tooltip title='E'>
-                                    <Avatar>E</Avatar>
-                                </Tooltip>
-                                <Tooltip title='F'>
-                                    <Avatar>F</Avatar>
-                                </Tooltip>
+                                {
+                                    // console.log(room.members),
+
+                                    room.members.map(() => (
+                                        <Tooltip key={room.idRoom} title='A'>
+                                            <Avatar>A</Avatar>
+                                        </Tooltip>
+                                    ))
+                                }
                             </Avatar.Group>
                         </ButtonGroupStyle>
                     </HeaderStyled>

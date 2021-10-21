@@ -41,6 +41,7 @@ export default function AddRoomsModal() {
     }
     
     const handleCancel = () => {
+        form.resetFields();
         setIsModalVisible(false);
     }
 

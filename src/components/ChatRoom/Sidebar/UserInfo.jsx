@@ -2,6 +2,7 @@ import { Avatar, Button, Typography } from 'antd'
 import React, {useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import firebase, { auth, db } from '../../../firebase/config';
+import { AppContext } from '../../Context/AppProvider';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const WrapperStyle = styled.div`
@@ -59,6 +60,7 @@ export default function UserInfo() {
 
 
     const data = React.useContext(AuthContext);
+    const {clearState} = useContext(AppContext)
 
     // console.log(data);
 
@@ -68,7 +70,15 @@ export default function UserInfo() {
                 <Avatar src={data.photoURL}>{data.photoURL ? '' : data.displayName && data.displayName.charAt(0) ? data.displayName.charAt(0) : ''}</Avatar>
                 <Typography.Text className="username">{data.displayName}</Typography.Text>
             </div>
-            <Button ghost onClick={() => auth.signOut()}>Đăng Xuất</Button>
+            <Button 
+                ghost onClick={() => {
+                        clearState();
+                        auth.signOut();
+                    }
+                }
+            >
+                Đăng Xuất
+            </Button>
         </WrapperStyle>
     )
 }

@@ -38,13 +38,20 @@ export default function AppProvider({children}) {
         return unsubscibed;
     }, [uidCondition]);
 
+    const clearState = () => {
+        setIsModalVisible(false);
+        setSelectRoomId('');
+        // setRooms([]);
+    }
+
     return (
         <AppContext.Provider value={{
             rooms, 
             isModalVisible, 
             setIsModalVisible,
             selectRoomId,
-            setSelectRoomId
+            setSelectRoomId,
+            clearState
         }}>
             {children}
         </AppContext.Provider>
