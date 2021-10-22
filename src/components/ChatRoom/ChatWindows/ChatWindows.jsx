@@ -6,6 +6,7 @@ import Message from './Message';
 import listMessage from '../../../data/listMessage.json'
 import { AppContext } from '../../Context/AppProvider';
 import { db } from '../../../firebase/config';
+import AddMembersModal from '../../Modal/AddMembersModal';
 
 const WrapperStyle = styled.div`
     height: 100vh;
@@ -81,9 +82,10 @@ const FormStyle = styled(Form)`
 `;
 
 export default function ChatWindows() {
-    const {selectRoomId} = useContext(AppContext);
+    const {selectRoomId, setIsModalAddMember} = useContext(AppContext);
     const [room, setRoom] = useState({});
-    // console.log(selectRoomId);
+    const [members, setMembers] = useState([]);
+
 
     const uidRoomCondition = useMemo(() => {
         return selectRoomId;
@@ -108,6 +110,33 @@ export default function ChatWindows() {
 
     // console.log(room);
 
+    // get members list from rooms list:
+    useEffect(() => {
+        let query = db.collection('user').orderBy('displayName');
+        
+        if(!room || !room.members) {
+            return;
+        }
+
+        // eslint-disable-next-line no-const-assign
+        query = query.where('uid', 'in', room.members);
+        
+        const unsubcribed = query.onSnapshot((querySnapshot) => {
+            const document = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }))
+
+            // console.log(document);
+            setMembers(document);
+
+        });
+
+        return unsubcribed;
+        
+    }, [room])
+                        
+
     return (
         <WrapperStyle>
             {selectRoomId && room ? (
@@ -118,14 +147,23 @@ export default function ChatWindows() {
                             <span className="header_des">{room.desciption}</span>
                         </div>
                         <ButtonGroupStyle>
-                            <Button icon={<UserAddOutlined/>} type="text">Mời</Button>
+                            <Button 
+                                onClick={() => {
+                                    setIsModalAddMember(true)
+                                }}
+                                icon={<UserAddOutlined/>} 
+                                type="text"
+                            >
+                                Mời
+                            </Button>
+                            <AddMembersModal/>
                             <Avatar.Group size='small' maxCount={2}>
                                 {
-                                    // console.log(room.members),
+                                    console.log({members}),
 
-                                    room.members.map(() => (
-                                        <Tooltip key={room.idRoom} title='A'>
-                                            <Avatar>A</Avatar>
+                                    members.map((member) => (
+                                        <Tooltip key={member.uid} title={member.displayName}>
+                                            <Avatar src={member.photoURL}>{member.photoURL ? '' : member.displayName && member.displayName.chatAt(0) ? member.displayName.chatAt(0) : ''}</Avatar>
                                         </Tooltip>
                                     ))
                                 }

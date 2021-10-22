@@ -5,7 +5,7 @@ import { PlusSquareOutlined} from '@ant-design/icons'
 import firebase, { db } from '../../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 import { AppContext, RoomsContext } from '../../Context/AppProvider';
-import AddRoomsModal from './Modal/AddRoomsModal';
+import AddRoomsModal from '../../Modal/AddRoomsModal';
 
 const { Panel } = Collapse;
 

@@ -1,8 +1,8 @@
 import { Input, Modal, Form } from 'antd';
 import React, { useContext } from 'react';
-import firebase, { db } from '../../../../firebase/config';
-import { AppContext } from '../../../Context/AppProvider';
-import { AuthContext } from '../../../Context/AuthProvider';
+import firebase, { db } from '../../firebase/config';
+import { AppContext } from '../Context/AppProvider';
+import { AuthContext } from '../Context/AuthProvider';
 
 
 export default function AddRoomsModal() {

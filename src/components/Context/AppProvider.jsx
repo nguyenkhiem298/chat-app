@@ -8,6 +8,7 @@ export default function AppProvider({children}) {
     const [rooms, setRooms] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectRoomId, setSelectRoomId] = useState('');
+    const [isModalAddMember, setIsModalAddMember] = useState(false);
 
     const {uid} = useContext(AuthContext);
 
@@ -51,7 +52,9 @@ export default function AppProvider({children}) {
             setIsModalVisible,
             selectRoomId,
             setSelectRoomId,
-            clearState
+            clearState,
+            isModalAddMember,
+            setIsModalAddMember
         }}>
             {children}
         </AppContext.Provider>
