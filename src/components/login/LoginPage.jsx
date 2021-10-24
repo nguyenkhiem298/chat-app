@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Button, Typography } from 'antd';
 import firebase, {auth, db} from '../../firebase/config';
 import { addDocument } from '../../firebase/service';
+import { generateKeywords } from '../../firebase/service'
 
 const { Title } = Typography;
 
@@ -28,12 +29,13 @@ export default function LoginPage() {
             userInfo.photoURL = user.photoURL;
             userInfo.uid = user.uid;
             userInfo.providerId = additionalUserInfo.providerId;
-
+            userInfo.keyworks = generateKeywords(user.displayName);
+            
             // save firebaseStore
             addDocument('user', userInfo);
         }
     }
-
+    
     const handleGoogleLogin = async () => {
         const {additionalUserInfo, user} = await auth.signInWithPopup(googleProvider);
         if(additionalUserInfo.isNewUser) {
@@ -43,7 +45,8 @@ export default function LoginPage() {
             userInfo.photoURL = user.photoURL;
             userInfo.uid = user.uid;
             userInfo.providerId = additionalUserInfo.providerId;
-
+            userInfo.keyworks = generateKeywords(user.displayName);
+            
             addDocument('user', userInfo);
         }
 

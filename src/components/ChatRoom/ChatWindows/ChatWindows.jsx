@@ -156,11 +156,9 @@ export default function ChatWindows() {
                             >
                                 Mời
                             </Button>
-                            <AddMembersModal/>
+                            
                             <Avatar.Group size='small' maxCount={2}>
                                 {
-                                    console.log({members}),
-
                                     members.map((member) => (
                                         <Tooltip key={member.uid} title={member.displayName}>
                                             <Avatar src={member.photoURL}>{member.photoURL ? '' : member.displayName && member.displayName.chatAt(0) ? member.displayName.chatAt(0) : ''}</Avatar>
