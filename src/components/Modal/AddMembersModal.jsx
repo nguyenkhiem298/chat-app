@@ -12,57 +12,50 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
     const [options, setOptions] = useState([]);
 
 
-/*     const debounceFetcher = useMemo(() => {
+    const debounceFetcher = useMemo(() => {
 
         const loadOption = (value) => {
             setOptions([]);
             setFetching(true);
 
-            fetchOptions()
-
+            fetchOptions(value).then((newOptions) => {
+                setOptions(newOptions);
+                setFetching(false);
+            })
         }
 
         return debounce(loadOption, debounceTimeout);
 
-    }, []) */
-
-    function handleChange(value) {
-        console.log(1);
-        // console.log(`selected ${value}`);
-    }
+    }, [fetchOptions, debounceTimeout])
 
     return (
         <Select
-            mode="multiple"
-            style={{ width: '100%' }}
-            placeholder="select users to add room"
-            onChange={handleChange}
-            optionLabelProp="label"
-            notFoundContent={fetching ? <Spin size='small'/> : null}
+            labelInValue
+            filterOption={false}
+            onSearch={debounceFetcher}
+            notFoundContent={fetching ? <Spin size='small' /> : null}
             {...props}
         >
-            <Option value="displayName1" title='displayName' key='uid1'>
-                <Avatar size='small' src='https://i.pinimg.com/736x/68/7f/f5/687ff58b82cf34da0cd1369598f22104.jpg'></Avatar>
-                displayName
-            </Option>
-            <Option value="displayName2" title='displayName' key='uid2'>
-                <Avatar size='small' src='https://i.pinimg.com/736x/68/7f/f5/687ff58b82cf34da0cd1369598f22104.jpg'></Avatar>
-                displayName
-            </Option>
-            <Option value="displayName3" title='displayName' key='uid3'>
-                <Avatar size='small' src='https://i.pinimg.com/736x/68/7f/f5/687ff58b82cf34da0cd1369598f22104.jpg'></Avatar>
-                displayName
-            </Option>
-            <Option value="displayName4" title='displayName' key='uid4'>
-                <Avatar size='small' src='https://i.pinimg.com/736x/68/7f/f5/687ff58b82cf34da0cd1369598f22104.jpg'></Avatar>
-                displayName
-            </Option>
+            {
+                console.log(options),
+
+                options.map((opt) => {
+                    <Select.Option value={opt.value} title={opt.label} key={opt.value}>
+                        <Avatar 
+                            size='small' 
+                            src={opt.photoURL}>
+                        </Avatar>
+                        {` ${opt.label}`}
+                    </Select.Option>
+                })
+            }
         </Select>
     )
 }
 
 // Call API to search
 async function fetchUserList(search) {
+    console.log(search);
     return db
         .collection('user')
         .where('keyworks', 'array-contains', search?.toLowerCase())
