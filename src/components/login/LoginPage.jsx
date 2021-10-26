@@ -29,7 +29,7 @@ export default function LoginPage() {
             userInfo.photoURL = user.photoURL;
             userInfo.uid = user.uid;
             userInfo.providerId = additionalUserInfo.providerId;
-            userInfo.keyworks = generateKeywords(user.displayName);
+            userInfo.keyworks = generateKeywords(user.displayName?.toLowerCase());
             
             // save firebaseStore
             addDocument('user', userInfo);
@@ -45,7 +45,7 @@ export default function LoginPage() {
             userInfo.photoURL = user.photoURL;
             userInfo.uid = user.uid;
             userInfo.providerId = additionalUserInfo.providerId;
-            userInfo.keyworks = generateKeywords(user.displayName);
+            userInfo.keyworks = generateKeywords(user.displayName?.toLowerCase());
             
             addDocument('user', userInfo);
         }

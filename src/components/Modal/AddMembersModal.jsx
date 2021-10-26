@@ -3,6 +3,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { AppContext } from '../Context/AppProvider';
 import { debounce } from 'lodash';
 import { generateKeywords } from '../../firebase/service';
+import { db } from '../../firebase/config';
 const { Option } = Select;
 
 function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...props}) {
@@ -11,19 +12,23 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
     const [options, setOptions] = useState([]);
 
 
-    const debounceFetcher = useMemo(() => {
+/*     const debounceFetcher = useMemo(() => {
 
         const loadOption = (value) => {
-            fetchOptions('Nguyen Manh Khiem');
+            setOptions([]);
+            setFetching(true);
+
+            fetchOptions()
 
         }
 
         return debounce(loadOption, debounceTimeout);
 
-    }, [])
+    }, []) */
 
     function handleChange(value) {
-        console.log(`selected ${value}`);
+        console.log(1);
+        // console.log(`selected ${value}`);
     }
 
     return (
@@ -31,7 +36,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
             mode="multiple"
             style={{ width: '100%' }}
             placeholder="select users to add room"
-            onChange={debounceFetcher}
+            onChange={handleChange}
             optionLabelProp="label"
             notFoundContent={fetching ? <Spin size='small'/> : null}
             {...props}
@@ -56,9 +61,23 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
     )
 }
 
-const fetchUserList = (mess) => {
-    console.log('fetchUserList: ' + mess);
+// Call API to search
+async function fetchUserList(search) {
+    return db
+        .collection('user')
+        .where('keyworks', 'array-contains', search?.toLowerCase())
+        .orderBy('displayName')
+        .limit(20)
+        .get()
+        .then((snapshot) => {
+            return snapshot.docs.map((doc) => ({
+                label: doc.data().displayName,
+                value: doc.data().uid,
+                photoURL: doc.data().photoURL,
+            }))
+        })
 }
+
 
 export default function AddMembersModal() {
     const {isModalAddMember, setIsModalAddMember, selectRoomId} = useContext(AppContext);
