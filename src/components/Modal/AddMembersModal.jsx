@@ -14,11 +14,12 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
 
     const debounceFetcher = useMemo(() => {
 
-        const loadOption = (value) => {
+        const loadOption = (value1) => {
+            // console.log({value1});
             setOptions([]);
             setFetching(true);
 
-            fetchOptions(value).then((newOptions) => {
+            fetchOptions(value1).then((newOptions) => {
                 setOptions(newOptions);
                 setFetching(false);
             })
@@ -28,8 +29,15 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
 
     }, [fetchOptions, debounceTimeout])
 
+    useEffect(() => {
+        return () => {
+          // clear when unmount
+          setOptions([]);
+        };
+      }, []);
+
     return (
-        <Select
+         <Select
             labelInValue
             filterOption={false}
             onSearch={debounceFetcher}
@@ -37,16 +45,16 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
             {...props}
         >
             {
-                console.log(options),
-
                 options.map((opt) => {
-                    <Select.Option value={opt.value} title={opt.label} key={opt.value}>
-                        <Avatar 
-                            size='small' 
-                            src={opt.photoURL}>
-                        </Avatar>
-                        {` ${opt.label}`}
-                    </Select.Option>
+                    return (
+                        <Select.Option value={opt.value} title={opt.label} key={opt.value}>
+                            <Avatar 
+                                size='small' 
+                                src={opt.photoURL}>
+                            </Avatar>
+                            {` ${opt.label}`}
+                        </Select.Option>
+                    )
                 })
             }
         </Select>
@@ -55,7 +63,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 300, curMembers, ...pr
 
 // Call API to search
 async function fetchUserList(search) {
-    console.log(search);
+    // console.log(search);
     return db
         .collection('user')
         .where('keyworks', 'array-contains', search?.toLowerCase())
@@ -74,17 +82,20 @@ async function fetchUserList(search) {
 
 export default function AddMembersModal() {
     const {isModalAddMember, setIsModalAddMember, selectRoomId} = useContext(AppContext);
-    const [value, setValue] = useState([])
+    const [value2, setValue1] = useState([])
     const [form] = Form.useForm();
     /*     const [visible, setVisible] = useState(false);
     const [keyword, setKeyword] = useState(''); */
 
     const handleOk = () => {
         form.resetFields();
+        setValue1([]);
         setIsModalAddMember(false);
     }
-
+    
     const handleCancel = () => {
+        form.resetFields();
+        setValue1([]);
         setIsModalAddMember(false);
     }
 
@@ -119,10 +130,10 @@ export default function AddMembersModal() {
                         mode='multiple'
                         name='search-user'
                         label='Tên các thành viên'
-                        value={value}
+                        value={value2}
                         placeholder='Nhập tên thành viên'
                         fetchOptions={fetchUserList}
-                        onChange={(newValue) => setValue(newValue)}
+                        onChange={(newValue) => setValue1(newValue)}
                         style={{ width: '100%' }}
                     />
                 </Form>
