@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Message from './Message';
 import listMessage from '../../../data/listMessage.json'
 import { AppContext } from '../../Context/AppProvider';
-import { db } from '../../../firebase/config';
+import firebase, { db } from '../../../firebase/config';
 import AddMembersModal from '../../Modal/AddMembersModal';
 
 const WrapperStyle = styled.div`
@@ -93,14 +93,18 @@ export default function ChatWindows() {
 
     //Get room by Id:
     useEffect(() => {
-        const query = db.collection("rooms").where("idRoom", "==", uidRoomCondition);
-
+        // get data by Id collection in firestore
+        if(!uidRoomCondition){
+            return;
+        }
+        const query = db.collection("rooms").where(firebase.firestore.FieldPath.documentId() , "==", uidRoomCondition);
+        
+        
         const unsubscibed = query.onSnapshot((querySnapshot) => {
             const document = querySnapshot.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }))
-
             // console.log(document[0]);
             setRoom(document[0]);
         });

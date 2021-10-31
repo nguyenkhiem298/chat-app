@@ -128,7 +128,7 @@ export default function RoomList() {
                     rooms.map((room) => (
                         <LinkStyle 
                             key={room.id}
-                            onClick={() => setSelectRoomId(room.idRoom)}
+                            onClick={() => setSelectRoomId(room.id)}
                         >
                             {room.nameRoom}
                         </LinkStyle>

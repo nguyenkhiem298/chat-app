@@ -81,13 +81,36 @@ async function fetchUserList(search) {
 
 
 export default function AddMembersModal() {
-    const {isModalAddMember, setIsModalAddMember, selectRoomId} = useContext(AppContext);
+    const {isModalAddMember, setIsModalAddMember, selectRoomId, selectRoom} = useContext(AppContext);
     const [value2, setValue1] = useState([])
     const [form] = Form.useForm();
     /*     const [visible, setVisible] = useState(false);
     const [keyword, setKeyword] = useState(''); */
 
     const handleOk = () => {
+
+        console.log({value2});
+
+        console.log({selectRoomId});
+        
+        const listMember = [];
+        listMember.push(...selectRoom.members);
+        value2.map((el) => {
+            listMember.push(el.value);
+        })
+        
+        const roomRef = db.collection('rooms').doc(selectRoomId); 
+
+        roomRef.update({
+            members: listMember
+        })
+        
+        listMember = [];
+        
+        console.log({listMember});
+
+
+
         form.resetFields();
         setValue1([]);
         setIsModalAddMember(false);

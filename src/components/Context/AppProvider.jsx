@@ -45,6 +45,14 @@ export default function AppProvider({children}) {
         // setRooms([]);
     }
 
+    //selectRoom
+    const selectRoom = useMemo(
+        () => {
+        // console.log({rooms});
+        const a = rooms.find((room) => room.id === selectRoomId || {});
+        return a;
+    }, [selectRoomId, rooms])
+
     return (
         <AppContext.Provider value={{
             rooms, 
@@ -54,7 +62,8 @@ export default function AppProvider({children}) {
             setSelectRoomId,
             clearState,
             isModalAddMember,
-            setIsModalAddMember
+            setIsModalAddMember,
+            selectRoom
         }}>
             {children}
         </AppContext.Provider>
